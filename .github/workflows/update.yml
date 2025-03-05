@@ -1,0 +1,35 @@
+name: files update
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '30 16 */2 * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # access to check out code and install dependencies
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run Script
+        run: python main.py
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add upstream_dns_file.conf
+          git commit -m "update conf"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: 'sync'

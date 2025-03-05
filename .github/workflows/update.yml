@@ -8,7 +8,7 @@ on:
     - cron: '30 16 */2 * *'
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
     permissions:
       contents: write # access to check out code and install dependencies
@@ -20,7 +20,7 @@ jobs:
           python-version: '3.13'
           cache: 'pip'
       - name: Install dependencies
-        run: pip install requests
+        run: pip install -r requirements.txt
       - name: Run Script
         run: python main.py
       - name: Commit files

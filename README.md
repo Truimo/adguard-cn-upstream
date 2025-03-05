@@ -11,7 +11,7 @@ adguard 指定某些域名使用特定上游，进行 dns 分流或 cn 加速互
 ```md
 https://raw.githubusercontent.com/Truimo/adguard-cn-upstream/sync/upstream_dns_file.conf
 #
-https://cdn.jsdelivr.net/gh/Truimo/adguard-cn-upstream/sync/upstream_dns_file.conf
+https://cdn.jsdelivr.net/gh/Truimo/adguard-cn-upstream@sync/upstream_dns_file.conf
 ```
 
 ## AdGuardHome 使用方法

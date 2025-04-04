@@ -5,13 +5,16 @@ import time
 
 import requests
 
-conf_url = 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
+conf_urls = [
+    'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf',
+    'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
+]
 
 default_dns = [
     'https://dns.20mo.cn/dns-query'
 ]
 cn_dns = 'quic://dns.alidns.com tls://dns.alidns.com'
-conf_file = 'accelerated-domains.china.conf'
+conf_file = 'domains.china.conf'
 save_file = 'upstream_dns_file.conf'
 
 if __name__ == '__main__':
@@ -22,21 +25,22 @@ if __name__ == '__main__':
         f'# update @ {new_time}',
         '# default dns',
         *default_dns,
-        '# all cn',
+        '# cn domains',
         f'[/cn/]{cn_dns}',
         '# cn domains',
     ]
 
-    r = requests.get(conf_url)
-    with open(conf_file, 'wb') as f:
-        f.write(r.content)
+    for conf in conf_urls:
+        r = requests.get(conf)
+        with open(conf_file, 'wb') as f:
+            f.write(r.content)
 
-    with open(conf_file, 'r') as f:
-        for it in f.readlines():
-            if it[0] == '#':
-                continue
-            rule = re.sub(r'^server=/(\S+)/[\s\S]+', rf'[/\1/]{cn_dns}', it)
-            rules.add(rule)
+        with open(conf_file, 'r') as f:
+            for it in f.readlines():
+                if it[0] == '#':
+                    continue
+                rule = re.sub(r'^server=/(\S+)/[\s\S]+', rf'[/\1/]{cn_dns}', it)
+                rules.add(rule)
 
     rules = list(rules)
     rules.sort()

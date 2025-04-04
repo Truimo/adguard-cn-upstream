@@ -9,6 +9,7 @@ conf_urls = [
     'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf',
     'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
 ]
+domestic_url = 'https://ruleset.skk.moe/List/non_ip/domestic.conf'
 
 default_dns = [
     'https://dns.20mo.cn/dns-query'
@@ -25,11 +26,12 @@ if __name__ == '__main__':
         f'# update @ {new_time}',
         '# default dns',
         *default_dns,
-        '# cn domains',
-        f'[/cn/]{cn_dns}',
+        '# cn suffix (on demand)',
+        f'# [/cn/]{cn_dns}',
         '# cn domains',
     ]
 
+    # felixonmars/dnsmasq-china-list
     for conf in conf_urls:
         r = requests.get(conf)
         with open(conf_file, 'wb') as f:
@@ -40,6 +42,27 @@ if __name__ == '__main__':
                 if it[0] == '#':
                     continue
                 rule = re.sub(r'^server=/(\S+)/[\s\S]+', rf'[/\1/]{cn_dns}', it)
+                rules.add(rule)
+
+    # ruleset.skk.moe
+    r = requests.get(domestic_url)
+    with open(conf_file, 'wb') as f:
+        f.write(r.content)
+
+    with open(conf_file, 'r') as f:
+        for it in f.readlines():
+            if it[0] == '#':
+                continue
+            if '.' not in it:
+                continue
+            if it.endswith('.ruleset.skk.moe\n'):
+                continue
+            if it.startswith('DOMAIN-SUFFIX,'):
+                rule = re.sub(r'^DOMAIN-SUFFIX,(\S+)\n', rf'[/\1/]{cn_dns}', it)
+                rules.add(rule)
+                continue
+            if it.startswith('DOMAIN,'):
+                rule = f'[/{it[7:-1]}/]{cn_dns}'
                 rules.add(rule)
 
     rules = list(rules)

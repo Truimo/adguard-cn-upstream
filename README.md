@@ -1,10 +1,12 @@
-# adguard-cn-upstream
+# AdGuardHome cn upstream
 
-adguard cn upstream dns file.
+adguard home cn upstream dns file.
 
-adguard 指定某些域名使用特定上游，进行 dns 分流或 cn 加速互联网访问。
+adguard home 指定某些域名使用特定上游，进行 dns 分流以加速 cn 域名互联网访问。
 
 规则来自 [felixonmars/dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list) 仓库
+[SukkaW/Surge](https://github.com/SukkaW/Surge) 仓库
+
 
 ## 规则文件
 
@@ -12,6 +14,8 @@ adguard 指定某些域名使用特定上游，进行 dns 分流或 cn 加速互
 https://raw.githubusercontent.com/Truimo/adguard-cn-upstream/sync/upstream_dns_file.conf
 #
 https://cdn.jsdelivr.net/gh/Truimo/adguard-cn-upstream@sync/upstream_dns_file.conf
+#
+https://fastly.jsdelivr.net/gh/Truimo/adguard-cn-upstream@sync/upstream_dns_file.conf
 ```
 
 ## AdGuardHome 使用方法

@@ -14,7 +14,7 @@ domestic_url = 'https://ruleset.skk.moe/List/non_ip/domestic.conf'
 default_dns = [
     'https://dns.20mo.cn/dns-query'
 ]
-cn_dns = 'quic://dns.alidns.com tls://dns.alidns.com'
+cn_dns = 'tls://dns.alidns.com quic://dns.alidns.com https://dns.alidns.com/dns-query tls://dot.pub https://doh.pub/dns-query'
 conf_file = 'domains.china.conf'
 save_file = 'upstream_dns_file.conf'
 
